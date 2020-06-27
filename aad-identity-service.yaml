@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aad-identity-service
+  namespace: default
+spec:
+  selector:
+      matchLabels:
+        app: aad-identity-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: aad-identity-service
+    spec:
+      containers:
+        - name: aad-identity-service-1
+          image: pchahal24/aad-identity-service:latest
+          imagePullPolicy: Always
+          ports:
+            - name: port-2424
+              containerPort: 2424
+              protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: aad-identity-service
+  labels:
+    app: aad-identity-service
+spec:
+  ports:
+  - port: 2424
+    protocol: TCP
+    name: port-2424
+    targetPort: 2424
+  selector:
+    app: aad-identity-service
+  type: ClusterIP
