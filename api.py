@@ -1,5 +1,5 @@
 import sys
-import urllib.parse
+from urllib.parse import urljoin, urlparse
 from flask import Flask
 from flask_restful import Api, Resource, request
 import msal
@@ -22,7 +22,7 @@ class TokenController(Resource):
         except ValueError as e:
             return str(e)
 
-        aad_instance = "https://login.windows.net/"
+        aad_instance = "https://login.windows.net"
         if('aad_instance' in args):
             aad_instance = args['aad_instance']
         
@@ -39,10 +39,15 @@ class TokenController(Resource):
         claims = {
             "iss": client_id
         }
+
+        path = urlparse(resource).path
+        if(path.strip() in ['/', ""]):
+            resource = urljoin(resource, '.default')
+
         app = msal.ConfidentialClientApplication(
             client_id=client_id,
             client_credential=client_credential,
-            authority=urllib.parse.urljoin(aad_instance, tenant),
+            authority=urljoin(aad_instance, tenant),
             client_claims=claims)
         res = app.acquire_token_for_client([resource])
         return res
