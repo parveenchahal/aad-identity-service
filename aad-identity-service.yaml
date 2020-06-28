@@ -14,13 +14,20 @@ spec:
         app: aad-identity-service
     spec:
       containers:
-        - name: aad-identity-service-1
-          image: pchahal24/aad-identity-service:latest
-          imagePullPolicy: Always
-          ports:
-            - name: port-2424
-              containerPort: 2424
-              protocol: TCP
+      - name: aad-identity-service-1
+        image: pchahal24/aad-identity-service:latest
+        imagePullPolicy: Always
+        ports:
+          - name: port-2424
+            containerPort: 2424
+            protocol: TCP
+        resources:
+          limits:
+            cpu: 100m
+            memory: 64Mi
+          requests:
+            cpu: 100m
+            memory: 32Mi
 ---
 apiVersion: v1
 kind: Service
