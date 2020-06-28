@@ -26,6 +26,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: aad-identity-service
+  namespace: default
   labels:
     app: aad-identity-service
 spec:
