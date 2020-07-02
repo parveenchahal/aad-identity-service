@@ -15,7 +15,7 @@ class TokenController(Resource):
         if('secret' not in args and ('cert' not in args or 'key' not in args)):
             raise ValueError("Either secret or cert and key is required")
 
-    def get(self, tenant):
+    def get(self, tenant="common"):
         args = request.args
         try:
             self.__validate_request_args(args)
@@ -55,6 +55,7 @@ class TokenController(Resource):
 app = Flask(__name__)
 api = Api(app)
 
-api.add_resource(TokenController, '/<tenant>')
+api.add_resource(TokenController, '/', '/<tenant>')
+
 if __name__ == '__main__':
     app.run(debug=False, host="0.0.0.0", port=2424)
