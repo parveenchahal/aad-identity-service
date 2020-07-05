@@ -1,4 +1,5 @@
 import sys
+import logging
 from urllib.parse import urljoin, urlparse
 from flask import Flask
 from flask_restful import Api, Resource, request
@@ -58,4 +59,6 @@ api = Api(app)
 api.add_resource(TokenController, '/', '/<tenant>')
 
 if __name__ == '__main__':
+    logger = logging.getLogger('werkzeug')
+    logger.setLevel(logging.ERROR)
     app.run(debug=False, host="0.0.0.0", port=2424)
